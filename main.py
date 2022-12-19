@@ -4,7 +4,7 @@ import datetime
 conn = sqlite3.connect("pucks.db")
 cur = conn.cursor()
 try:
-    cur.execute("CREATE TABLE pucks(puckid type UNIQUE, person, date, location)")
+    cur.execute("CREATE TABLE pucks(puckid type UNIQUE, person, date, location, remark)")
 except:
     pass
 
