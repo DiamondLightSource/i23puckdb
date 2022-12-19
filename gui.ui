@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1122</width>
-    <height>849</height>
+    <width>1428</width>
+    <height>787</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>resources/combipuck.jpg</normaloff>resources/combipuck.jpg</iconset>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -150,8 +154,8 @@
    <widget class="QLabel" name="lab_I23">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>655</y>
+      <x>1310</x>
+      <y>20</y>
       <width>121</width>
       <height>151</height>
      </rect>
@@ -173,8 +177,8 @@
    <widget class="QLabel" name="lab_RD">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>770</y>
+      <x>1130</x>
+      <y>300</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -199,8 +203,8 @@
    <widget class="QLabel" name="lab_VM">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>770</y>
+      <x>1290</x>
+      <y>300</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -222,8 +226,8 @@
    <widget class="QLabel" name="lab_CO">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>770</y>
+      <x>1130</x>
+      <y>460</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -245,8 +249,8 @@
    <widget class="QLabel" name="lab_KEO">
     <property name="geometry">
      <rect>
-      <x>820</x>
-      <y>770</y>
+      <x>1290</x>
+      <y>460</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -268,8 +272,8 @@
    <widget class="QLabel" name="lab_AW">
     <property name="geometry">
      <rect>
-      <x>970</x>
-      <y>770</y>
+      <x>1210</x>
+      <y>610</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -291,8 +295,8 @@
    <widget class="QLabel" name="qr_I23">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>650</y>
+      <x>1140</x>
+      <y>20</y>
       <width>161</width>
       <height>161</height>
      </rect>
@@ -310,10 +314,10 @@
    <widget class="QLabel" name="qr_RD">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>650</y>
-      <width>120</width>
-      <height>120</height>
+      <x>1150</x>
+      <y>220</y>
+      <width>80</width>
+      <height>80</height>
      </rect>
     </property>
     <property name="text">
@@ -329,10 +333,10 @@
    <widget class="QLabel" name="qr_VM">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>650</y>
-      <width>120</width>
-      <height>120</height>
+      <x>1310</x>
+      <y>220</y>
+      <width>80</width>
+      <height>80</height>
      </rect>
     </property>
     <property name="text">
@@ -348,17 +352,17 @@
    <widget class="QLabel" name="qr_CO">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>650</y>
-      <width>120</width>
-      <height>120</height>
+      <x>1150</x>
+      <y>380</y>
+      <width>80</width>
+      <height>80</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>resources/QR_VM.png</pixmap>
+     <pixmap>resources/QR_CO.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -367,10 +371,10 @@
    <widget class="QLabel" name="qr_KEO">
     <property name="geometry">
      <rect>
-      <x>820</x>
-      <y>650</y>
-      <width>120</width>
-      <height>120</height>
+      <x>1310</x>
+      <y>380</y>
+      <width>80</width>
+      <height>80</height>
      </rect>
     </property>
     <property name="text">
@@ -386,10 +390,10 @@
    <widget class="QLabel" name="qr_AW">
     <property name="geometry">
      <rect>
-      <x>970</x>
-      <y>650</y>
-      <width>120</width>
-      <height>120</height>
+      <x>1230</x>
+      <y>530</y>
+      <width>80</width>
+      <height>80</height>
      </rect>
     </property>
     <property name="text">
@@ -529,7 +533,7 @@
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>191</y>
+      <y>200</y>
       <width>721</width>
       <height>451</height>
      </rect>
@@ -558,6 +562,11 @@
     <column>
      <property name="text">
       <string>Location</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Remark</string>
      </property>
     </column>
    </widget>
