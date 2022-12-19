@@ -282,7 +282,8 @@ class Ui_MainWindow(object):
             self.tableWidget_db.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
             self.tableWidget_db.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
             self.tableWidget_db.setItem(tablerow, 2, QtWidgets.QTableWidgetItem(row[2]))
-            self.tableWidget_db.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))            
+            self.tableWidget_db.setItem(tablerow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            self.tableWidget_db.setItem(tablerow, 4, QtWidgets.QTableWidgetItem(row[4]))
             tablerow += 1
         connection.close()
         
