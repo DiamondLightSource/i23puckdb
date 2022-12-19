@@ -286,7 +286,7 @@ class Ui_MainWindow(object):
         today = datetime.date.today()
         date = str(today.strftime("%d_%m_%Y"))
         location, location_done = QtWidgets.QInputDialog.getText(None, "Location", "Scan in to I23 using QR or input send location: ")
-        data = ((str(puckid)).upper, (str(person)).upper, date, (str(location)).upper)
+        data = (str(puckid), str(person), date, str(location))
         if str(puckid) != "" and str(person) != "" and str(location) != "":
             connection = sqlite3.connect("pucks.db")
             cur = connection.cursor()
