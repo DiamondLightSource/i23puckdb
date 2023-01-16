@@ -277,7 +277,7 @@ class Ui_MainWindow(object):
         sqlstr = 'SELECT * FROM pucks'
         tablerow = 0
         results = cur.execute(sqlstr)
-        self.tableWidget_db.setRowCount(40)
+        self.tableWidget_db.setRowCount(100)
         for row in results:
             self.tableWidget_db.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
             self.tableWidget_db.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
