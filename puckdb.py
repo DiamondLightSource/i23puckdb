@@ -7,7 +7,7 @@ import datetime
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("I23 PuckDB")
-        MainWindow.resize(1428, 787)#
+        MainWindow.resize(1428, 787)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("resources/combipuck.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -254,21 +254,23 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Location"))
         item = self.tableWidget_db.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "Remark"))
+        self.countPucks()        
         self.loadData()
         self.countPucks()
+
     
     def countPucks(self):
         connection = sqlite3.connect('pucks.db')
         cur = connection.cursor()
         cur.execute("SELECT COUNT(*) from pucks")
-        total = cur.fetchone()[0]
+        self.total = cur.fetchone()[0]
         checkLocation = "I23"
         atI23 = cur.execute("SELECT COUNT(*) from pucks WHERE location=?", ("I23",))
         atI23 = cur.fetchone()[0]
         connection.close()
-        self.lcdNum_total.display(int(total))
+        self.lcdNum_total.display(int(self.total))
         self.lcdNum_avail.display(int(atI23))
-        self.lcdNum_onloan.display(int(total) - int(atI23))
+        self.lcdNum_onloan.display(int(self.total) - int(atI23))
 
 
     def loadData(self):
@@ -277,7 +279,7 @@ class Ui_MainWindow(object):
         sqlstr = 'SELECT * FROM pucks'
         tablerow = 0
         results = cur.execute(sqlstr)
-        self.tableWidget_db.setRowCount(100)
+        self.tableWidget_db.setRowCount(int(self.total + 1))
         for row in results:
             self.tableWidget_db.setItem(tablerow, 0, QtWidgets.QTableWidgetItem(row[0]))
             self.tableWidget_db.setItem(tablerow, 1, QtWidgets.QTableWidgetItem(row[1]))
@@ -314,8 +316,10 @@ class Ui_MainWindow(object):
             msg.setWindowTitle("Error!")
             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
         msg.exec()
+        self.countPucks()        
         self.loadData()
         self.countPucks()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
