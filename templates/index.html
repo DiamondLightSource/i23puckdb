@@ -3,27 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Viewer</title>
+    <title>I23 Puck Database Viewer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='jquery.dataTables.min.css') }}">
+    <script src="{{ url_for('static', filename='jquery.dataTables.min.js') }}"></script>
 </head>
 <body>
-    <h1>Database Records</h1>
-    <table border="1">
-        <tr>
-            <th>Puck ID</th>
-            <th>Person</th>
-            <th>Date</th>
-            <th>Location</th>
-            <th>Remark</th>
-        </tr>
-        {% for row in data %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td>{{ row[4] }}</td>
-        </tr>
-        {% endfor %}
+    <h1>Pucks</h1>
+
+    <input type="text" id="searchInput" placeholder="Search records">
+
+    <table id="recordsTable" class="display">
+        <thead>
+            <tr>
+                <th>Puck ID</th>
+                <th>Person</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#recordsTable').DataTable({
+                "paging": true, 
+                "searching": true,
+                "ordering": true 
+            });
+
+            $('#searchInput').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+        });
+    </script>
 </body>
 </html>
