@@ -17,6 +17,12 @@ spec:
         image: your_docker_image_name
         ports:
         - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
         volumeMounts:
         - mountPath: "/app/pucks.db"
           name: db-volume
