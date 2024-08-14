@@ -20,6 +20,10 @@ def index():
     data = getData()
     return render_template('index.html', data=data)
 
+@app.route('/healthz')
+def healthCheck():
+    return 'OK', 200
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
     
