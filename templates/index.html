@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I23 Puck Database Viewer</title>
-    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>    
     <link rel="stylesheet" href="{{ url_for('static', filename='jquery.dataTables.min.css') }}">
     <script src="{{ url_for('static', filename='jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center my-4">Pucks</h1>
-        <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search records">
+        <button class="btn btn-primary my-3" id="newEntryBtn">New Entry</button>
         <table id="recordsTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -20,6 +22,7 @@
                     <th>Date</th>
                     <th>Location</th>
                     <th>Remark</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,24 +33,137 @@
                     <td>{{ row[2] }}</td>
                     <td>{{ row[3] }}</td>
                     <td>{{ row[4] }}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm edit-btn" data-id="{{ row[0] }}">Edit</button>
+                        <form action="{{ url_for('delete_record', puckid=row[0]) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="editForm" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" id="editPuckID" name="puckid">
+                        <div class="form-group">
+                            <label for="editPerson">Person</label>
+                            <input type="text" class="form-control" id="editPerson" name="person" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDate">Date</label>
+                            <input type="date" class="form-control" id="editDate" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editLocation">Location</label>
+                            <input type="text" class="form-control" id="editLocation" name="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editRemark">Remark</label>
+                            <input type="text" class="form-control" id="editRemark" name="remark">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newEntryModal" tabindex="-1" role="dialog" aria-labelledby="newEntryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newEntryModalLabel">Create New Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="newEntryForm" method="POST" action="/create">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="newPuckID">Puck ID</label>
+                            <input type="text" class="form-control" id="newPuckID" name="puckid" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPerson">Person</label>
+                            <input type="text" class="form-control" id="newPerson" name="person" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newDate">Date</label>
+                            <input type="date" class="form-control" id="newDate" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newLocation">Location</label>
+                            <input type="text" class="form-control" id="newLocation" name="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newRemark">Remark</label>
+                            <input type="text" class="form-control" id="newRemark" name="remark">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create Entry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         $(document).ready(function() {
             var table = $('#recordsTable').DataTable({
-                "paging": true, 
+                "paging": true,
                 "searching": true,
-                "ordering": true 
+                "ordering": true
             });
-
+    
             $('#searchInput').on('keyup', function() {
                 table.search(this.value).draw();
             });
+    
+            $(document).on('click', '.edit-btn', function() {
+                var puckid = $(this).data('id');
+                console.log('Edit button clicked for PuckID:', puckid);
+                $.getJSON('/record/' + puckid, function(record) {
+                    if (record) {
+                        console.log('Record fetched:', record);
+                        $('#editPuckID').val(record.puckid);
+                        $('#editPerson').val(record.person);
+                        $('#editDate').val(record.date);
+                        $('#editLocation').val(record.location);
+                        $('#editRemark').val(record.remark);
+                        $('#editForm').attr('action', '/update');
+                        $('#editModal').modal('show');
+                    } else {
+                        console.error('Record not found');
+                    }
+                }).fail(function() {
+                    console.error('Failed to fetch record');
+                });
+            });
         });
     </script>
-</body>
-</html>
+
+    <script>
+        $(document).ready(function() {
+            $('#newEntryBtn').on('click', function() {
+                $('#newEntryModal').modal('show');
+            });
+        });
+    </script>
