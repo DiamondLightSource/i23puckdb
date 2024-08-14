@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web-server
+        image: your_docker_image_name
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: "/app/pucks.db"
+          name: db-volume
+      volumes:
+      - name: db-volume
+        hostPath:
+          path: "/dls/science/groups/i23/PuckDB/pyqr_i23/pucks.db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-server-service
+spec:
+  selector:
+    app: web-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: NodePort
