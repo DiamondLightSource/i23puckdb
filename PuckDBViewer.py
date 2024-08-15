@@ -46,7 +46,7 @@ def delete_record(puckid):
     conn.commit()
     conn.close()
     
-    return redirect(url_for('index'))
+    return jsonify({"success": True})
 
 @app.route('/record/<string:puckid>', methods=['GET'])
 def get_record(puckid):

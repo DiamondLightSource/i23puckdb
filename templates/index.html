@@ -36,7 +36,7 @@
                     <td>
                         <button class="btn btn-warning btn-sm edit-btn" data-id="{{ row[0] }}">Edit</button>
                         <form action="{{ url_for('delete_record', puckid=row[0]) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{ row.puckid }}">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -164,6 +164,30 @@
         $(document).ready(function() {
             $('#newEntryBtn').on('click', function() {
                 $('#newEntryModal').modal('show');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.delete-btn').on('click', function(e) {
+                e.preventDefault();
+                var puckid = $(this).data('id');
+                
+                var confirmed = confirm("Are you sure you want to delete this entry?");
+                
+                if (confirmed) {
+                    $.ajax({
+                        url: '/delete/' + puckid,
+                        type: 'POST',
+                        success: function(result) {
+                            window.location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error deleting entry. Please try again.');
+                        }
+                    });
+                }
             });
         });
     </script>
