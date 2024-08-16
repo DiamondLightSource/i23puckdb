@@ -6,14 +6,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-server
+      app: puckdbviewer
   template:
     metadata:
       labels:
-        app: web-server
+        app: puckdbviewer
     spec:
       containers:
-      - name: web-server
+      - name: puckdbviewer
         image: your_docker_image_name
         ports:
         - containerPort: 5000
@@ -34,10 +34,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-server-service
+  name: puckdbviewer-service
 spec:
   selector:
-    app: web-server
+    app: puckdbviewer
   ports:
     - protocol: TCP
       port: 80
