@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-server
+  name: i23puckdb-deployment
 spec:
   replicas: 1
   selector:
@@ -12,9 +12,17 @@ spec:
       labels:
         app: puckdbviewer
     spec:
+      securityContext:
+        runAsUser: 37693 # can run as me, need to add permissions to get it to run from yosoku namespace
+        runAsGroup: 37848
+        supplementalGroups:  
+          - 37900
       containers:
       - name: puckdbviewer
-        image: your_docker_image_name
+        securityContext:
+          privileged: false
+        image: gcr.io/diamond-privreg/puckdb-i23/puckdb:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         livenessProbe:
@@ -24,22 +32,47 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
         volumeMounts:
-        - mountPath: "/app/pucks.db"
-          name: db-volume
+          - mountPath: /dls
+            name: dls
+            mountPropagation: HostToContainer
       volumes:
-      - name: db-volume
+      - name: dls
         hostPath:
-          path: "/dls/science/groups/i23/PuckDB/pyqr_i23/pucks.db"
+          path: /dls
+          type: Directory
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: puckdbviewer-service
+  name: i23puckdbviewer-service
 spec:
   selector:
     app: puckdbviewer
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 5000
-  type: NodePort
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: i23puckdb-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - i23puckdb.diamond.ac.uk
+  rules:
+  - host: i23puckdb.diamond.ac.uk
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: i23puckdbviewer-service # this must match the name of the service you want to target
+            port:
+              number: 80 # or does this need to be 5000??
