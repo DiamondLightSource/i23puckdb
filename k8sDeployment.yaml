@@ -55,24 +55,25 @@ spec:
       targetPort: 5000
   type: LoadBalancer
   externalTrafficPolicy: Cluster
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: i23puckdb-ingress
-spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - i23puckdb.diamond.ac.uk
-  rules:
-  - host: i23puckdb.diamond.ac.uk
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: i23puckdbviewer-service # this must match the name of the service you want to target
-            port:
-              number: 80 # or does this need to be 5000??
+  loadBalancerIP: 172.23.169.234
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: i23puckdb-ingress
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#   - hosts:
+#     - i23puckdb.diamond.ac.uk
+#   rules:
+#   - host: i23puckdb.diamond.ac.uk
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: i23puckdbviewer-service # this must match the name of the service you want to target
+#             port:
+#               number: 80 # or does this need to be 5000??
