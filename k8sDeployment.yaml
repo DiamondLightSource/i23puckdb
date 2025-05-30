@@ -21,7 +21,7 @@ spec:
       - name: puckdbviewer
         securityContext:
           privileged: false
-        image: gcr.io/diamond-privreg/puckdb-i23/puckdb:v1
+        image: ghcr.io/diamondlightsource/i23puckdb:v1
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -35,6 +35,8 @@ spec:
           - mountPath: /dls
             name: dls
             mountPropagation: HostToContainer
+      imagePullSecrets:
+        - name: ghcr-secret
       volumes:
       - name: dls
         hostPath:
